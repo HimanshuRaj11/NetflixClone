@@ -1,59 +1,61 @@
 import { useState } from "react";
 import styled from "styled-components";
-// import logo from "https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=700&h=456";
-// import background from "https://miro.medium.com/v2/resize:fit:1400/1*5lyavS59mazOFnb55Z6znQ.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase";
 import Header from "../components/Header";
 import BackgroundImage from "../components/BackgroundImage";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-  
-    const handleLogin = async () => {
-      try {
-        await signInWithEmailAndPassword(firebaseAuth, email, password);
-      } catch (error) {
-        console.log(error.code);
-      }
-    };
-  
-    onAuthStateChanged(firebaseAuth, (currentUser) => {
-      if (currentUser) navigate("/");
-    });
-    return (
-        <Container>
-        <BackgroundImage />
-        <div className="content">
-          <Header />
-          <div className="form-container flex column a-center j-center">
-            <div className="form flex column a-center j-center">
-              <div className="title">
-                <h3>Login</h3>
-              </div>
-              <div className="container flex column">
-                <input
-                  type="text"
-                  placeholder="Email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                />
-                <button onClick={handleLogin}>Login to your account</button>
-              </div>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (error) {
+      console.log(error.code);
+    }
+  };
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
+  return (
+    <Container>
+      <BackgroundImage />
+      <div className="content">
+        <Header />
+        <div className="form-container flex column a-center j-center">
+          <div className="form flex column a-center j-center">
+            <div className="title">
+              <h3>Login</h3>
+            </div>
+            <div className="container flex column">
+              <input
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <button onClick={handleLogin}>Login to your account</button>
+              <span>
+                <p>Don't have an account</p>
+                <Link className="link" to='/signin'>Signin</Link>
+              </span>
             </div>
           </div>
         </div>
-      </Container>
-    );
+      </div>
+    </Container>
+  );
 }
 const Container = styled.div`
   position: relative;
@@ -90,6 +92,9 @@ const Container = styled.div`
             font-weight: bolder;
             font-size: 1.05rem;
           }
+            .link{
+              color: #e50914;
+            }
         }
       }
     }
